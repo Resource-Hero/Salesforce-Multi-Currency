@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OP_Budget_Number_Converted__c</fullName>
+    <externalId>false</externalId>
+    <formula>OP_Budget_Number_Org__c *  CURRENCYRATE(TEXT( CurrencyIsoCode ))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>OP Budget Number Converted</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

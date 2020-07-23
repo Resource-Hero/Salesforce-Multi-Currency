@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Update_b_plus_a_from_flow_field</name>
+        <label>Update b plus a from flow field</label>
+        <locationX>505</locationX>
+        <locationY>441</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.B_A_From_flow__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>budgetplusamount</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.B_A_From_flow_fixed__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>budgetplusamount_fixed</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <formulas>
+        <name>budgetplusamount</name>
+        <dataType>Currency</dataType>
+        <expression>{!Get_parent_opp.Amount} + {!$Record.Budget__c}</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>budgetplusamount_fixed</name>
+        <dataType>Currency</dataType>
+        <expression>(( {!$Record.Budget__c}/ CURRENCYRATE(TEXT({!$Record.CurrencyIsoCode}))) + ({!Get_parent_opp.Amount} / CURRENCYRATE(TEXT({!Get_parent_opp.CurrencyIsoCode})))) * CURRENCYRATE(TEXT({!$Record.CurrencyIsoCode}))</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>Budget plus amount from flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Budget plus amount from flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_parent_opp</name>
+        <label>Get parent opp</label>
+        <locationX>289</locationX>
+        <locationY>363</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_b_plus_a_from_flow_field</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Opportunity__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_parent_opp</targetReference>
+        </connector>
+        <object>Opp_Project__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
